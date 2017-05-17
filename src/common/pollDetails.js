@@ -47,7 +47,7 @@ class PollDetails extends Component {
     e.preventDefault()
     let question = {question: this.props.poll.poll.question}
     let self = this
-    axios.post('https://vote-chaddly.herokuapp.com/polls/delete', question).then(function(res){
+    axios.post('http://vote-chaddly.herokuapp.com/polls/delete', question).then(function(res){
       self.context.router.history.push('/')
     })
       .catch(function(err){
@@ -73,7 +73,7 @@ class PollDetails extends Component {
     this.setState({counts: counts})
     let question = this.props.poll.poll.question
     let self = this
-    axios.post("https://vote-chaddly.herokuapp.com/polls/" + question, option)
+    axios.post("http://vote-chaddly-server.herokuapp.com/polls/" + question, option)
   }
 
   showAlert(message){

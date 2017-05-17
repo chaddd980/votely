@@ -30,7 +30,7 @@ class Login extends Component {
     let password = this.state.password;
     var self = this;
     let user = { username: username, password: password }
-    axios.post('/users/login', user).then(function(res){
+    axios.post('https://vote-chaddly-server.herokuapp.com/users/login', user).then(function(res){
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', res.data.user.username)
       self.props.action(fetchUser(res.data.user))

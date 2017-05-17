@@ -25,7 +25,7 @@ class AllPolls extends Component {
 
   getUser(){
     let self = this;
-    axios.get("/polls/allPolls")
+    axios.get("https://vote-chaddly.herokuapp.com/polls/allPolls")
       .then(function(res, rej){
         console.log(res)
         self.setState({polls:res.data})

@@ -40,7 +40,7 @@ class NewPoll extends Component {
     } else {
       this.setState({options: optionsArray})
       debugger
-      axios.post("https://vote-chaddly-server.herokuapp.com/polls/newPoll", poll).then(function(res){
+      axios.post("http://localhost:3000/polls/newPoll", poll).then(function(res){
         self.context.router.history.push('/')
       })
         .catch(function(err){

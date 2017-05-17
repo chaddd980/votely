@@ -31,7 +31,7 @@ class NewPoll extends Component {
   handlePollCreation(e){
     e.preventDefault()
     let self = this
-    let poll = {question: this.state.question, option: this.state.option, user: localStorage.getItem('user')}
+    let poll = {question: this.state.question, option: this.state.option, user: this.state.user}
     let optionsText = this.state.option
     optionsText = optionsText.replace(/ /g, "");
     let optionsArray = optionsText.split("\n")
@@ -40,7 +40,7 @@ class NewPoll extends Component {
     } else {
       this.setState({options: optionsArray})
       debugger
-      axios.post("https://localhost:3100/polls/newPoll", poll).then(function(res){
+      axios.post("https://vote-chaddly-server.herokuapp.com/polls/newPoll", poll).then(function(res){
         self.context.router.history.push('/')
       })
         .catch(function(err){
@@ -59,6 +59,11 @@ class NewPoll extends Component {
       type: 'error'
     });
   }
+
+  componentDidMount(){
+    this.setState( {user: localStorage.getItem('user')} )
+  }
+
 
   render() {
     let style = {

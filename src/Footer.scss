@@ -1,0 +1,16 @@
+$background-colour: #18BC9C;
+$height: 11.5rem;
+$padding: 1rem;
+$color: white;
+
+footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: $padding;
+  color: $color;
+  background-color: $background-colour;
+  text-align: center;
+  height: $height;
+}

@@ -17,7 +17,7 @@ class MyPolls extends Component {
   getUserPolls(){
     let user = localStorage.getItem("user")
     let self = this;
-    axios.get("http://vote-chaddly-server.herokuapp.com/polls/" + user)
+    axios.get("/polls/" + user)
       .then(function(res, rej){
         console.log(res)
         self.setState({myPolls:res.data})

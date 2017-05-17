@@ -40,7 +40,7 @@ class NewPoll extends Component {
     } else {
       this.setState({options: optionsArray})
       debugger
-      axios.post("http://localhost:3100/polls/newPoll", poll).then(function(res){
+      axios.post("https://localhost:3100/polls/newPoll", poll).then(function(res){
         self.context.router.history.push('/')
       })
         .catch(function(err){

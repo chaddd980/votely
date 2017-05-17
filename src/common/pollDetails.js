@@ -12,7 +12,7 @@ import Chart from "./chart"
 class PollDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = {margin: 0, visibility: "hidden"};
+    this.state = {margin: 0, visibility: "hidden", optionChosen: '..'};
     this.alertOptions = {
       offset: 14,
       position: 'bottom left',
@@ -56,24 +56,30 @@ class PollDetails extends Component {
   }
 
   handleNewOptionChange(e) {
-    this.setState({ optionChosen: e.target.value})
+    this.setState({ optionChosen: e.target.value, newOption: true})
   }
 
   handleSubmit(e){
     e.preventDefault()
-    if(this.state.optionChosen === "..") {
+    if(this.state.optionChosen === ".." ) {
       this.showAlert("Please select one of the options")
+    } else {
+        let option = {option: this.state.optionChosen}
+        let options = this.state.options
+        let optionIndex = options.indexOf(option.option)
+        let counts = this.state.counts
+        let updatedCount = counts[optionIndex] + 1
+        counts[optionIndex] = updatedCount
+        if(this.state.newOption){
+          this.setState({counts: counts, options: this.state.optionChosen})
+        } else{
+          this.setState({counts: counts})
+        }
+        let question = this.props.poll.poll.question
+        // this.context.router.history.push('/')
+        axios.post("https://vote-chaddly-server.herokuapp.com/polls/" + question, option)
     }
-    let option = {option: this.state.optionChosen}
-    let options = this.state.options
-    let optionIndex = options.indexOf(option.option)
-    let counts = this.state.counts
-    let updatedCount = counts[optionIndex] + 1
-    counts[optionIndex] = updatedCount
-    this.setState({counts: counts})
-    let question = this.props.poll.poll.question
-    let self = this
-    axios.post("https://vote-chaddly-server.herokuapp.com/polls/" + question, option)
+
   }
 
   showAlert(message){
@@ -84,6 +90,7 @@ class PollDetails extends Component {
   }
 
   componentDidMount(){
+    console.log('waddup famoly')
     let options = this.props.poll.poll.options
     let optionValues = []
     let optionsKeys = []

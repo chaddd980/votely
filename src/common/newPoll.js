@@ -31,7 +31,7 @@ class NewPoll extends Component {
   handlePollCreation(e){
     e.preventDefault()
     let self = this
-    let poll = {question: this.state.question, option: this.state.option}
+    let poll = {question: this.state.question, option: this.state.option, user: localStorage.getItem('user')}
     let optionsText = this.state.option
     optionsText = optionsText.replace(/ /g, "");
     let optionsArray = optionsText.split("\n")
@@ -39,6 +39,7 @@ class NewPoll extends Component {
       this.showAlert("Please enter at least 2 options")
     } else {
       this.setState({options: optionsArray})
+      debugger
       axios.post("https://vote-chaddly-server.herokuapp.com/polls/newPoll", poll).then(function(res){
         self.context.router.history.push('/')
       })

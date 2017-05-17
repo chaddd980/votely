@@ -1,9 +1,0 @@
-{
-  "root": "build/",
-  "proxies": {
-    "/api/": {
-      "origin": "${API_URL}"
-    }
-  },
-  "https_only": true
-}

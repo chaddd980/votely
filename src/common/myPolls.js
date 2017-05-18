@@ -28,8 +28,8 @@ class MyPolls extends Component {
     }
 
     handleClick(poll){
-  this.props.action(showPoll(poll))
-}
+      this.props.action(showPoll(poll))
+    }
 
   componentWillMount(){
     this.getUserPolls()

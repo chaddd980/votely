@@ -8,6 +8,11 @@ import axios from 'axios';
 import AlertContainer from 'react-alert';
 import Chart from "./chart";
 var Confirm = require('react-confirm-bootstrap');
+import {
+  ShareButtons,
+  ShareCounts,
+  generateShareIcon
+} from 'react-share';
 
 
 
@@ -25,6 +30,7 @@ class PollDetails extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setOptions = this.setOptions.bind(this);
     this.handleNewOptionChange = this.handleNewOptionChange.bind(this);
   }
 
@@ -47,7 +53,7 @@ class PollDetails extends Component {
   }
 
   handleDelete(e){
-    let question = {question: this.props.poll.poll.question}
+    let question = {question: this.state.poll.question}
     let self = this
     axios.post('https://vote-chaddly-server.herokuapp.com/polls/delete', question).then(function(res){
       self.context.router.history.push('/')
@@ -71,7 +77,7 @@ class PollDetails extends Component {
       options.push(this.state.addedOption)
       counts.push(1)
       let option = {option: this.state.addedOption}
-      let question = this.props.poll.poll.question
+      let question = this.state.poll.question
       this.setState({
         options: options,
         counts: counts
@@ -90,7 +96,7 @@ class PollDetails extends Component {
         } else{
           this.setState({counts: counts})
         }
-        let question = this.props.poll.poll.question
+        let question = this.state.poll.question
         axios.post("https://vote-chaddly-server.herokuapp.com/polls/" + question, option)
     }
   }
@@ -102,21 +108,35 @@ class PollDetails extends Component {
     });
   }
 
+  setOptions(){
+    if (this.state.poll){
+      debugger
+      let options = this.state.poll.options
+      let optionValues = []
+      let optionsKeys = []
+      for(var i=0; i<options.length; i++){
+        let optionKey = Object.keys(options[i])
+        optionsKeys = optionsKeys.concat(optionKey)
+      }
+      for(var i=0; i<optionsKeys.length; i++) {
+        // debugger
+        let optionValue = options[i][optionsKeys[i]]
+        optionValues.push(optionValue)
+      }
+      this.setState({options: optionsKeys, counts: optionValues, user: this.state.poll.user})
+    }
+  }
+
   componentDidMount(){
-    console.log('waddup famoly')
-    let options = this.props.poll.poll.options
-    let optionValues = []
-    let optionsKeys = []
-    for(var i=0; i<options.length; i++){
-      let optionKey = Object.keys(options[i])
-      optionsKeys = optionsKeys.concat(optionKey)
+    if(this.props.poll){
+      let poll = this.props.poll.poll
+      localStorage.setItem('poll', JSON.stringify(poll))
     }
-    for(var i=0; i<optionsKeys.length; i++) {
-      // debugger
-      let optionValue = options[i][optionsKeys[i]]
-      optionValues.push(optionValue)
-    }
-    this.setState({options: optionsKeys, counts: optionValues, user: this.props.poll.poll.user})
+    this.setState({
+      poll: JSON.parse(localStorage.getItem('poll'))
+    }, () => {
+      this.setOptions()
+    })
   }
 
 
@@ -145,7 +165,13 @@ class PollDetails extends Component {
     }
     let extraOptions = ""
     let newOption = ""
+    let question = ""
+    let chartOptions = []
+    let counts = []
     if(this.state.options){
+      question = this.state.poll.question
+      chartOptions = this.state.options
+      counts = this.state.counts
       let options = this.state.options
       extraOptions = options.map((option)=>
         <option value={option} name={option} id={option}>{option}</option>
@@ -159,7 +185,7 @@ class PollDetails extends Component {
     return (
       <div className="main-div">
         <AlertContainer ref={(a) => this.msg = a} {...this.alertOptions} />
-        <h2 style={header}>{this.props.poll.poll.question}</h2>
+        <h2 style={header}>{question}</h2>
         <form className="col-md-6" onSubmit={this.handleSubmit}>
           <div className="form-group col-md-9">
             <label for="sel1">Select list:</label>
@@ -175,7 +201,7 @@ class PollDetails extends Component {
           </div>
         </form>
         <div className="col-md-6">
-          <Chart options={this.state.options} counts={this.state.counts} />
+          <Chart options={chartOptions} counts={counts} />
         </div>
       </div>
 

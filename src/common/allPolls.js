@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import {showPoll} from "../redux/actions/pollActions";
 
 
+
 class AllPolls extends Component {
   constructor(props) {
     super(props);

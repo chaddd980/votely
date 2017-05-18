@@ -26,6 +26,7 @@ class AllPolls extends Component {
   getUser(){
     let self = this;
     axios.get("https://vote-chaddly-server.herokuapp.com/polls/allPolls")
+    // axios.get("http://localhost:3100/polls/allPolls")
       .then(function(res, rej){
         console.log(res)
         self.setState({polls:res.data})
@@ -43,6 +44,9 @@ class AllPolls extends Component {
     this.getUser()
   }
   render() {
+    let style = {
+      "padding": 0
+    }
     let allPolls = ""
     if(this.state.polls){
       let container = []
@@ -59,7 +63,7 @@ class AllPolls extends Component {
       <div className='main-div'>
         <h1>All Polls</h1>
         <p>Chose a poll to vote on!</p>
-        <ul>
+        <ul style={style}>
           {allPolls}
         </ul>
       </div>

@@ -81,7 +81,7 @@ class NewPoll extends Component {
                   <input type="text" className="form-control" name="question" name="subject" placeholder="New Question" required onChange={this.handleQuestionChange}/>
                 </div>
                 <div className="form-group">
-                  <textarea className="form-control" type="textarea" name="option" placeholder="Option" maxlength="140" rows="7" onChange={this.handleOptionChange}  ></textarea>
+                  <textarea className="form-control" type="textarea" name="option" placeholder="Options. Each on a new line" maxlength="140" rows="7" onChange={this.handleOptionChange}  ></textarea>
                 </div>
                 <button type="submit" id="submit" name="submit" className="btn btn-primary pull-right">Submit Poll</button>
               </form>

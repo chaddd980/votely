@@ -7,7 +7,11 @@ import randomColor from 'randomcolor';
 class Chart extends Component {
   render() {
     let self = this
-    var colors = randomColor({count: 3});
+    let count = 3
+    if (this.props.options){
+      count = this.props.options.length
+    }
+    var colors = randomColor({count: count});
     var data = {
                 labels: self.props.options,
                 datasets: [{

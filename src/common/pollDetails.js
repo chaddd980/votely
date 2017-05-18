@@ -6,7 +6,9 @@ import {showPoll} from "../redux/actions/pollActions";
 import Button from 'react-bootstrap/lib/Button';
 import axios from 'axios';
 import AlertContainer from 'react-alert';
-import Chart from "./chart"
+import Chart from "./chart";
+var Confirm = require('react-confirm-bootstrap');
+
 
 
 class PollDetails extends Component {
@@ -32,6 +34,7 @@ class PollDetails extends Component {
       this.setState({
         margin: 15,
         visibility: "visible",
+        optionChosen: "New Option"
       })
     } else {
       console.log(e.target.value)
@@ -44,7 +47,6 @@ class PollDetails extends Component {
   }
 
   handleDelete(e){
-    e.preventDefault()
     let question = {question: this.props.poll.poll.question}
     let self = this
     axios.post('https://vote-chaddly-server.herokuapp.com/polls/delete', question).then(function(res){
@@ -56,14 +58,27 @@ class PollDetails extends Component {
   }
 
   handleNewOptionChange(e) {
-    this.setState({ optionChosen: e.target.value, newOption: true})
+    this.setState({ addedOption: e.target.value, newOption: true})
   }
 
   handleSubmit(e){
     e.preventDefault()
     if(this.state.optionChosen === ".." ) {
       this.showAlert("Please select one of the options")
+    } else if(this.state.addedOption) {
+      let options = this.state.options
+      let counts = this.state.counts
+      options.push(this.state.addedOption)
+      counts.push(1)
+      let option = {option: this.state.addedOption}
+      let question = this.props.poll.poll.question
+      this.setState({
+        options: options,
+        counts: counts
+      })
+      axios.post("https://vote-chaddly-server.herokuapp.com/polls/" + question, option)
     } else {
+      let self = this
         let option = {option: this.state.optionChosen}
         let options = this.state.options
         let optionIndex = options.indexOf(option.option)
@@ -76,10 +91,8 @@ class PollDetails extends Component {
           this.setState({counts: counts})
         }
         let question = this.props.poll.poll.question
-        // this.context.router.history.push('/')
         axios.post("https://vote-chaddly-server.herokuapp.com/polls/" + question, option)
     }
-
   }
 
   showAlert(message){
@@ -112,7 +125,13 @@ class PollDetails extends Component {
     let deletePoll = ""
     if (user === this.state.user) {
       deletePoll =
-      <Button onClick={this.handleDelete} bsSize="lg" bsStyle="danger" block>Delete</Button>
+      <Confirm
+          onConfirm={this.handleDelete}
+          body="Are you sure you want to delete this?"
+          confirmText="Confirm Delete"
+          title="Deleting Stuff">
+          <Button bsSize="lg" bsStyle="danger" block>Delete</Button>
+      </Confirm>
     }
     let header = {
       "text-align": "center"

@@ -39,7 +39,6 @@ class NewPoll extends Component {
       this.showAlert("Please enter at least 2 options")
     } else {
       this.setState({options: optionsArray})
-      debugger
       axios.post("https://vote-chaddly-server.herokuapp.com/polls/newPoll", poll).then(function(res){
         self.context.router.history.push('/')
       })

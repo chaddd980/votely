@@ -40,6 +40,9 @@ class MyPolls extends Component {
     var style = {
       "margin-bottom": 20
     }
+    let padding = {
+      "padding": 0
+    }
     let allPolls = ""
     if(this.state.myPolls){
       let polls = this.state.myPolls
@@ -54,7 +57,7 @@ class MyPolls extends Component {
     return (
       <div className='main-div'>
         <h1 style={style} >My Polls</h1>
-        <ul>
+        <ul style={padding}>
           {allPolls}
         </ul>
       </div>

@@ -16,7 +16,7 @@ class Footer extends Component {
                           <h3 style={style}>View Code on Github</h3>
                           <ul className="list-inline">
                               <li>
-                                  <a href="https://github.com/chaddd980" className="btn-social btn-outline"><span className="sr-only">GitHub</span><i className="fa fa-fw fa-2x fa-github"></i></a>
+                                  <a href="https://github.com/chaddd980/votely" className="btn-social btn-outline"><span className="sr-only">GitHub</span><i className="fa fa-fw fa-2x fa-github"></i></a>
                               </li>
                           </ul>
                       </div>
